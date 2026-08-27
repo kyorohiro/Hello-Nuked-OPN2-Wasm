@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Nuked OPN2 Wasm</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f5efe5;
+        --panel: #fffaf3;
+        --ink: #231d16;
+        --line: #d7c8ad;
+        --accent: #9f4f2d;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, #fff7de 0, transparent 28%),
+          radial-gradient(circle at bottom right, #ebd9bf 0, transparent 24%),
+          linear-gradient(160deg, var(--bg), #eaddc8 60%, #decfb7);
+      }
+
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 40px 20px 64px;
+      }
+
+      .panel {
+        background: color-mix(in srgb, var(--panel) 92%, white 8%);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: 0 18px 40px rgba(90, 62, 30, 0.12);
+      }
+
+      h1, h2 {
+        margin: 0 0 12px;
+        line-height: 1.15;
+        letter-spacing: -0.04em;
+      }
+
+      h1 { font-size: clamp(2rem, 4vw, 3rem); }
+      h2 { margin-top: 26px; font-size: 1.3rem; }
+      p, li { line-height: 1.6; }
+
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      a.button {
+        display: inline-block;
+        text-decoration: none;
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-weight: 700;
+        color: white;
+        background: var(--accent);
+      }
+
+      code, pre {
+        font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+
+      pre {
+        margin: 0;
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: #2b241d;
+        color: #f6ead7;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="panel">
+        <h1>Hello Nuked OPN2 Wasm</h1>
+
+        <p>
+          This repository provides a small WebAssembly build of
+          <code>Nuked-OPN2</code> for YM2612 / YM3438 experiments in the browser.
+        </p>
+
+        <p>
+          It was prepared as one backend candidate for
+          <a href="https://github.com/kyorohiro/hello_ymfm_wasm">Tetorica FM2612</a>,
+          so the browser tools there can compare <code>ymfm</code> and
+          <code>nuked-opn2</code> under similar conditions.
+        </p>
+
+        <h2>Try It</h2>
+        <div class="links">
+          <a class="button" href="./demos/nuked_opn2_embeded.html">Embedded Demo</a>
+          <a class="button" href="https://github.com/kyorohiro/hello_ymfm_wasm">hello_ymfm_wasm</a>
+          <a class="button" href="https://kyorohiro.github.io/hello_ymfm_wasm/">Tetorica FM2612 Site</a>
+        </div>
+
+        <h2>What Is Included Here</h2>
+        <ul>
+          <li><code>generated/nuked_opn2_wasm.js</code> and <code>.wasm</code></li>
+          <li><code>web/ym2612.js</code> as a small browser-side wrapper</li>
+          <li><code>docs/demos/nuked_opn2_embeded.html</code> as a minimal runnable demo</li>
+        </ul>
+
+        <h2>Build</h2>
+        <pre>sh build_wasm.sh</pre>
+      </section>
+    </main>
+  </body>
+</html>

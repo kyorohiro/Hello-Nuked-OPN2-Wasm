@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nuked OPN2 Wasm Embedded Demo</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4efe4;
+        --panel: #fffaf0;
+        --ink: #1f1b16;
+        --accent: #b4572f;
+        --accent-dark: #7e381c;
+        --line: #d7c8ac;
+        --code: #2b241d;
+        --code-ink: #f6ead7;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, #fff8df 0, transparent 28%),
+          radial-gradient(circle at bottom right, #f0d8ba 0, transparent 24%),
+          linear-gradient(160deg, var(--bg), #eadfc9 60%, #e0cfb5);
+      }
+
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 48px 20px 64px;
+      }
+
+      .panel {
+        background: color-mix(in srgb, var(--panel) 90%, white 10%);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: 0 18px 40px rgba(90, 62, 30, 0.12);
+      }
+
+      h1, h2 {
+        margin: 0 0 12px;
+        line-height: 1.15;
+        letter-spacing: -0.04em;
+      }
+
+      h1 { font-size: clamp(2rem, 4vw, 3.2rem); }
+      h2 { margin-top: 28px; font-size: 1.35rem; }
+      p, li { line-height: 1.6; }
+
+      pre, code {
+        font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+      }
+
+      pre {
+        margin: 0 0 16px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: var(--code);
+        color: var(--code-ink);
+        overflow-x: auto;
+        white-space: pre-wrap;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 24px 0 18px;
+      }
+
+      button, .link-button {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        font: inherit;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      button:disabled {
+        cursor: wait;
+        opacity: 0.7;
+      }
+
+      .status {
+        min-height: 1.5em;
+        font-weight: 600;
+      }
+
+      .meta {
+        margin: 0 0 16px;
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="panel">
+        <h1>Nuked OPN2 Wasm Embedded Demo</h1>
+
+        <p>
+          This page is the small browser-side embedding example for this repository.
+          It mirrors the role of <code>docs/demos/megasynth_embeded.html</code> in
+          <code>hello_ymfm_wasm</code>, but uses the lower-level Nuked OPN2 wrapper directly.
+        </p>
+
+        <p>
+          If you want the higher-level browser synth runtime, switch to
+          <a href="https://github.com/kyorohiro/hello_ymfm_wasm">hello_ymfm_wasm</a>.
+          This repository focuses on the <code>Nuked-OPN2</code> backend itself.
+        </p>
+
+        <p class="meta">
+          Source:
+          <a href="https://github.com/kyorohiro/hello_ymfm_wasm/tree/main/w/Hello-Nuked-OPN2-Wasm/web/ym2612.js">web/ym2612.js</a>
+          |
+          <a href="https://github.com/kyorohiro/hello_ymfm_wasm/tree/main/w/Hello-Nuked-OPN2-Wasm/docs/demos/nuked_opn2_embeded.html">docs/demos/nuked_opn2_embeded.html</a>
+        </p>
+
+        <h2>Minimal Usage</h2>
+
+        <pre>import nukedOpn2ModuleFactory from "../generated/nuked_opn2_wasm.js";
+import { createYm2612 } from "../web/ym2612.js";
+
+const ym2612 = await createYm2612(nukedOpn2ModuleFactory);
+
+ym2612.reset();
+
+// Mute operators 1-3.
+ym2612.writeRegister(0x40, 0x7f, 0);
+ym2612.writeRegister(0x44, 0x7f, 0);
+ym2612.writeRegister(0x48, 0x7f, 0);
+
+// Operator 4 as a simple audible carrier.
+ym2612.writeRegister(0x4c, 0x08, 0);
+ym2612.writeRegister(0x5c, 0x16, 0);
+ym2612.writeRegister(0x6c, 0x06, 0);
+ym2612.writeRegister(0x8c, 0x38, 0);
+
+// Algorithm 7, pan L+R.
+ym2612.writeRegister(0xb0, 0x07, 0);
+ym2612.writeRegister(0xb4, 0xc0, 0);
+
+// Block/F-Number, then key on.
+ym2612.writeRegister(0xa4, 0x22, 0);
+ym2612.writeRegister(0xa0, 0x29, 0);
+ym2612.writeRegister(0x28, 0xf0, 0);</pre>
+
+        <div class="actions">
+          <button id="playButton" type="button">Play</button>
+          <a class="link-button" href="../index.html">Back</a>
+        </div>
+
+        <div class="status" id="status">Ready.</div>
+      </section>
+    </main>
+
+    <script type="module">
+      import nukedOpn2ModuleFactory from "../generated/nuked_opn2_wasm.js";
+      import { createYm2612 } from "../web/ym2612.js";
+
+      const playButton = document.getElementById("playButton");
+      const status = document.getElementById("status");
+
+      let audioContext = null;
+      let ym2612 = null;
+
+      function setStatus(message) {
+        status.textContent = message;
+      }
+
+      async function ensureReady() {
+        if (!audioContext) {
+          audioContext = new AudioContext();
+        }
+        if (audioContext.state !== "running") {
+          await audioContext.resume();
+        }
+        if (!ym2612) {
+          ym2612 = await createYm2612(nukedOpn2ModuleFactory);
+        }
+      }
+
+      function configureBeep(chip) {
+        chip.reset();
+
+        // DT / MULTI
+        chip.writeRegister(0x30, 0x01, 0);
+        chip.writeRegister(0x34, 0x01, 0);
+        chip.writeRegister(0x38, 0x01, 0);
+        chip.writeRegister(0x3c, 0x01, 0);
+
+        // Total Level
+        chip.writeRegister(0x40, 0x7f, 0);
+        chip.writeRegister(0x44, 0x7f, 0);
+        chip.writeRegister(0x48, 0x7f, 0);
+        chip.writeRegister(0x4c, 0x08, 0);
+
+        // Attack / Decay / Sustain / Release
+        chip.writeRegister(0x50, 0x1f, 0);
+        chip.writeRegister(0x54, 0x1f, 0);
+        chip.writeRegister(0x58, 0x1f, 0);
+        chip.writeRegister(0x5c, 0x16, 0);
+        chip.writeRegister(0x60, 0x00, 0);
+        chip.writeRegister(0x64, 0x00, 0);
+        chip.writeRegister(0x68, 0x00, 0);
+        chip.writeRegister(0x6c, 0x06, 0);
+        chip.writeRegister(0x80, 0x0f, 0);
+        chip.writeRegister(0x84, 0x0f, 0);
+        chip.writeRegister(0x88, 0x0f, 0);
+        chip.writeRegister(0x8c, 0x38, 0);
+
+        // Algorithm / Pan / Frequency
+        chip.writeRegister(0xb0, 0x07, 0);
+        chip.writeRegister(0xb4, 0xc0, 0);
+        chip.writeRegister(0xa4, 0x22, 0);
+        chip.writeRegister(0xa0, 0x29, 0);
+      }
+
+      async function playBeep() {
+        playButton.disabled = true;
+        setStatus("Preparing audio...");
+
+        try {
+          await ensureReady();
+          configureBeep(ym2612);
+
+          ym2612.writeRegister(0x28, 0xf0, 0);
+
+          const durationFrames = Math.floor(audioContext.sampleRate * 1.25);
+          const { left, right } = ym2612.generateStereo(durationFrames);
+
+          ym2612.writeRegister(0x28, 0x00, 0);
+
+          const buffer = audioContext.createBuffer(2, durationFrames, audioContext.sampleRate);
+          buffer.copyToChannel(left, 0);
+          buffer.copyToChannel(right, 1);
+
+          const source = audioContext.createBufferSource();
+          source.buffer = buffer;
+          source.connect(audioContext.destination);
+          source.start();
+
+          setStatus("Played one beep with Nuked OPN2 Wasm.");
+        } catch (error) {
+          console.error(error);
+          setStatus(`Error: ${error.message}`);
+        } finally {
+          playButton.disabled = false;
+        }
+      }
+
+      playButton.addEventListener("click", playBeep);
+    </script>
+  </body>
+</html>

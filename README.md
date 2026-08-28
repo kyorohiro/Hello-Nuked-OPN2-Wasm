@@ -1,9 +1,13 @@
-# Nuked-OPN2
-High accuracy Yamaha YM3438(OPN2) emulator.
+# Hello-Nuked-OPN2-Wasm
 
-The YM3438 is a CMOS variant of the YM2612 used in Sega MegaDrive(Genesis) and FM Towns.
+You can try it here:
 
-Genesis Plus GX fork with this core integrated is available here: https://github.com/nukeykt/Genesis-Plus-GX
+- https://kyorohiro.github.io/Hello-Nuked-OPN2-Wasm/
+
+Original Nuked-OPN2:
+
+- https://github.com/nukeykt/Nuked-OPN2
+
 
 # Why this repository exists
 
@@ -59,6 +63,13 @@ Then open:
 
 The embedded demo plays one small YM2612-style beep through the
 Nuked-OPN2 WebAssembly runtime.
+
+# Nuked-OPN2
+High accuracy Yamaha YM3438(OPN2) emulator.
+
+The YM3438 is a CMOS variant of the YM2612 used in Sega MegaDrive(Genesis) and FM Towns.
+
+Genesis Plus GX fork with this core integrated is available here: https://github.com/nukeykt/Genesis-Plus-GX
 
 # Features:
 - Based on YM3438 die shot reverse engineering and thus provides very high emulation accuracy.
